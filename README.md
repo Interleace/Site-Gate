@@ -9,6 +9,8 @@
 [![No Cloud](https://img.shields.io/badge/cloud-none-lightgrey.svg)]()
 [![No Tracking](https://img.shields.io/badge/tracking-none-lightgrey.svg)]()
 
+![alt text](https://github.com/Interleace/Site-Gate/blob/main/InAtion.PNG?raw=true)
+
 > **DE:** Self-use Browser-Addon für Selbsteinschränkung: blockierte Sites nur nach konfigurierbarer Fragerunde — oder Verzicht.
 >
 > **EN:** Self-use browser extension for self-restraint: blocked sites only after a configurable question round — or give up.
@@ -100,6 +102,9 @@ User navigiert → blockierte Domain?
 | F16 | Befürwortete Domains | Tagesziele in Minuten, aktive Tab-Zeit → Growth-XP |
 | F17 | Adaptive Modus | Langer Streak → kürzere Warte; Rückfall → +1 Bestätigung |
 
+![alt text](https://github.com/Interleace/Site-Gate/blob/main/Websites.PNG?raw=true)
+
+
 ---
 
 ## Fragen-Typen · Question types
@@ -111,6 +116,8 @@ User navigiert → blockierte Domain?
 | `wait` | Countdown in Sekunden; Tab-Wechsel setzt Timer zurück |
 | `phrase` | Satz fehlerfrei abtippen; kein Einfügen (Paste gesperrt) |
 | `confirm` | Mehrfach „Ja, ich will wirklich"; Anzahl der Steps konfigurierbar |
+
+![alt text](https://github.com/Interleace/Site-Gate/blob/main/Fragen.PNG?raw=true)
 
 ---
 
@@ -154,6 +161,8 @@ User navigiert → blockierte Domain?
 **Adaptive Regeln:**
 - `cleanStreak ≥ 3` oder `growthStreak ≥ 2` → Wartezeit-Reduktion
 - `completesToday ≥ 2` → +1 Bestätigungsschritt
+
+![alt text](https://github.com/Interleace/Site-Gate/blob/main/Fortschritt.PNG?raw=true)
 
 ---
 
