@@ -1,0 +1,294 @@
+@SITEGATE/CODEC/v1.2
+# Kanonische Projekt-Kodierung — Single Source of Truth
+# Alle Community-Artefakte (GitHub, Social, Blog, Sponsoring) aus diesem String ableiten.
+# Syntax: @block{key=value; ...} | # Kommentar | --- Abschnitt
+# Ableitung: siehe @derive am Ende
+
+@meta{
+  codec_version=1.4;
+  project_version=1.4.0;
+  git_branch=beta;
+  git_tag=v1.4.0-beta.1;
+  language_primary=de;
+  language_secondary=en;
+  license=MIT;
+  status=alpha-self-use;
+  repo_slug=site-gate;
+  repo_name=Site Gate;
+  repo_full_name=Site Gate — Fragerunde;
+  extension_id_gecko=site-gate@local;
+  manifest=MV3;
+  created_context=2026;
+  maintainer_role=solo-self-use-first;
+  distribution=unpacked-side-load;
+  store_presence=none-yet
+}
+
+@identity{
+  name=Site Gate;
+  name_long=Site Gate — Fragerunde;
+  slug=site-gate;
+  tagline_de=Reibung vor Ablenkung.;
+  tagline_en=Friction before distraction.;
+  one_liner_de=Browser-Addon für Selbsteinschränkung: blockierte Sites nur nach konfigurierbarer Fragerunde — oder Verzicht.;
+  one_liner_en=Browser extension for self-restraint: blocked sites only after a configurable question round — or give up.;
+  elevator_de=Site Gate fängt impulsive Navigation zu Ablenkungs-Sites ab, startet eine ehrliche Fragerunde und protokolliert deine Antworten lokal. Kein Cloud-Zwang, kein Moralprediger — nur Reibung, die du selbst konfigurierst.;
+  elevator_en=Site Gate intercepts impulsive visits to distraction sites, runs an honest question round, and logs answers locally. No cloud, no lecture — friction you configure yourself.;
+  emoji_set=🚧⏳🔒📝;
+  hashtag_de=#SiteGate #Selbsteinschränkung #DigitalWellbeing #BrowserAddon #OpenSource;
+  hashtag_en=#SiteGate #SelfControl #DigitalWellbeing #BrowserExtension #OpenSource
+}
+
+@philosophy{
+  core=Self-use tool: du bist Nutzer und Regelgeber zugleich.;
+  principle_1=Reibung statt Verbot — Zugang ist möglich, aber nicht gratis.;
+  principle_2=Ehrlichkeit durch Protokoll — Antworten bleiben lokal, für Reflexion.;
+  principle_3=Kein perfekter Gefängnis-Modus — Extension deaktivieren umgeht alles; Ziel ist impulsivem Ich helfen, nicht dich kontrollieren.;
+  principle_4=Verschärfen erlaubt, Lockern erschwert — besonders unter Commitment Lock.;
+  principle_5=Bottom-up: einfache WebExtension, keine Infrastruktur, kein Account.;
+  tone= direkt, sachlich, nicht belehrend, nicht zynisch, deutsch primär;
+  anti_patterns=keine Schuld-App; keine Gamification-Belohnungen fürs Scrollen; keine Cloud-Pflicht; kein Tracking
+}
+
+@audience{
+  primary= Menschen, die sich selbst beim impulsiven Site-Besuch helfen wollen;
+  secondary= Entwickler:innen, die WebExtensions / Digital-Wellbeing erkunden;
+  pain= Autopilot in Adresszeile; „nur kurz“ wird 45 Minuten; Blocker zu leicht umgehbar; reine Blocker ohne Reflexion;
+  desire= spürbare Pause; bewusste Entscheidung; ehrliches Log; verschärfbare Regeln in guten Momenten;
+  not_for= Eltern-Kind-Überwachung; Unternehmens-DLP; Leute, die harte Unumgehbarkeit auf OS-Ebene brauchen
+}
+
+@problem_solution{
+  problem=Impuls → URL → sofortige Belohnung. Willenskraft allein verliert.;
+  intervention=Navigation abfangen → Gate-Seite (Extension-Kontext, kein Overlay) → Fragen → nur Verzicht oder Durchhalten;
+  outcome_abort=about:blank + Protokoll „abgebrochen“;
+  outcome_complete=Ziel-Site für diesen Tab frei (Session) + Protokoll „durchgestanden“ + ggf. Impuls-Budget verbraucht
+}
+
+@features_core{
+  F01=Blockliste konfigurierbar (Domains, eine pro Zeile, ohne https);
+  F02=Abfang aller Navigation: Adresszeile, Links, Lesezeichen, Reload;
+  F03=Gate als vollständige Umleitung — technisch schwer umgehbar außer Abbrechen oder durchstehen;
+  F04=6 Standard-Fragetypen: Freitext, Kopfrechnen, Wartezeit, Satz abtippen, Bestätigung (mehrstufig);
+  F05=Fragen-Editor: Reihenfolge ↑↓, aktiv/inaktiv, Typ, Label, Hint, Schwellwerte;
+  F06=Fragen-Statistik: Gesamt / Aktiv / Inaktiv / Pro Durchlauf (live);
+  F07=Fragen pro Gate-Durchlauf: Limit N, Modus ordered|random, 0=alle aktiven;
+  F08=Lokales Protokoll: Ziel-URL, Antworten, aborted|completed, JSON-Export, max 200 Einträge;
+  F09=Toast-Benachrichtigung bei neuer Frage im Editor;
+  F10=Gate-Themes: ember(Glut), forest(Wald), slate(Schiefer), dawn(Morgen) via CSS-Variablen + Live-Vorschau;
+  F11=Commitment Lock (Verpflichtungssperre) — siehe @lock;
+  F12=Cross-Browser: Chrome/Edge/Firefox MV3; Firefox background.scripts + Chrome service_worker;
+  F13=i18n: en/de/es/fr + Auto + JSON-Overrides pro Key;
+  F14=Self-Leveling dual-track: Integritäts-XP (Gate) + Wachstums-XP (befürwortete Sites);
+  F15=Impuls-Budget: global pro Tag + optional pro blockierter Domain (host,budget);
+  F16=Befürwortete Domains: Tagesziele in Minuten, aktive Tab-Zeit (Fokus) → Growth-XP;
+  F17=10 Stufen aus integrityXp + growthXp kombiniert; Adaptiv nutzt beide Streaks;
+  F15=Adaptive Modus: langer Streak → kürzere Warte; Rückfall → +1 Bestätigung
+}
+
+@i18n{
+  engine=shared/i18n.js + shared/locales/{code}.json;
+  locales=en(de-fallback-merge); de(full); es(fr-partial→en);
+  setting=gateSettings.locale auto|en|de|es|fr;
+  overrides=localeOverrides in sync storage JSON key→string;
+  ui_apply=data-i18n data-i18n-placeholder data-i18n-title + t(key,params);
+  extensible=Neue Sprache: locales/xx.json anlegen; partielle Keys reichen;
+  community=Übersetzungen via PR willkommen; Keys in en.json master
+}
+
+@leveling{
+  name_de=Dual-Gate Leveling;
+  name_en=Dual-gate leveling (integrity + growth);
+  intent=Gate = Zurückhaltung; befürwortete Sites = produktiver Fortschritt; Spiegel + sanfte Adaptation;
+  tracks=integrity(gate) + growth(endorsed active tab minutes);
+  metrics=cleanStreakDays; growthStreakDays; resistStreak; totalAborts; totalCompletes; lockAdherenceDays; budgetCleanDays; integrityXp; growthXp; growthMinutesToday;
+  xp_cleanDay=+15; xp_abort=+8; xp_budgetDay=+10; xp_lockDay=+12; xp_complete=-4; xp_growthPerMinute=+2; xp_goalMetDay=+25; xp_allGoalsMetDay=+40;
+  level=totalXp=integrityXp+growthXp; tiers=10 Stufen level.tier.1..10 (i18n);
+  modes=reflect(nur Anzeige); adaptive(Warte−/Confirm+); off;
+  adaptive_rules=cleanStreak≥3 OR growthStreak≥2 → waitReduction; completesToday≥2 → extraConfirm+1;
+  gate_display=Clean-Streak + Level + optional growth minutes in gate header;
+  tab=Fortschritt / Progress in options (dual tracks + endorsed goal bars);
+  storage=levelState + levelingSettings + endorsedDaily in local;
+  rollover=chrome.alarms stündlich + bei gate-check daily processDailyRollover;
+  endorsed_tick=alarm site-gate-endorsed every ENDORSED_TICK_MINUTES + tab/window focus events
+}
+
+@question_types{
+  text=Freitext; minChars; minWords; optional requireDuration;
+  math=Kopfrechnen; zufällige Multiplikation; bei Fehler neue Aufgabe;
+  wait=Wartezeit Sekunden; Tab-Wechsel setzt Timer zurück;
+  phrase=Satz fehlerfrei abtippen; kein Paste;
+  confirm=Mehrfach „Ja, ich will wirklich“; steps konfigurierbar
+}
+
+@lock{
+  name_de=Verpflichtungssperre;
+  name_en=Commitment Lock;
+  concept=Future-you schützt present-you: in guten Momenten sperrst du das Lockern von Regeln.;
+  duration_options=1h|4h|24h|7d|30d;
+  while_locked_block= Sites entfernen; Fragen löschen/deaktivieren/abschwächen; Fragen/Durchlauf unter Minimum senken;
+  while_locked_allow= Sites hinzufügen; Fragen hinzufügen; Regeln verschärfen;
+  impulse_budget= max N erfolgreiche Gate-Durchläufe pro Tag → danach Budget-Sperrbildschirm statt Fragen;
+  friction_stacking= jeder Durchlauf heute addiert +Sek auf Warte-Fragen beim nächsten Mal (cap konfigurierbar);
+  witness_phrase= Zeuge-Satz nur als SHA-256 Hash lokal; Frühentsperrung; 3 Fehlversuche → 15min Cooldown;
+  storage= commitmentLock + lockSettings + dailyStats in chrome.storage.local
+}
+
+@gate_flow{
+  step_1=User navigiert zu blockierter Domain;
+  step_2=background.js prüft: blockiert? sessionAllow? budget?;
+  step_3=Redirect zu gate/gate.html?target=&tab=;
+  step_4=gate-check: budget exceeded → Sperrbildschirm, nur Verzicht;
+  step_5=Fragen nacheinander (Limit/Modus/Friction angewandt);
+  step_6a=Abbrechen → gate-abort → about:blank → Log aborted;
+  step_6b=Fertig → gate-complete → sessionAllow host → Ziel-URL → Log completed → dailyCompletions++
+}
+
+@ui_tabs{
+  sites=Blockierte Domains;
+  questions=Editor + Statistik + Limit/Modus;
+  theme=Darstellung / Gate-Themes;
+  lock=Verpflichtungssperre aktivieren/Status/Entsperren;
+  logs=Protokoll Viewer Export Leeren
+}
+
+@tech{
+  stack=Vanilla JS; WebExtensions MV3; CSS custom properties; keine Build-Chain Pflicht;
+  browsers=Chrome 121+; Edge 121+; Firefox 109+ (121+ empfohlen für dual background manifest);
+  permissions=storage; tabs; webNavigation; host_permissions all_urls;
+  no_permissions= keine remote servers; keine analytics; keine accounts;
+  structure=manifest.json; background.js; shared/{defaults,question-engine,themes,lock}.js; gate/{html,css,js}; options/{html,css,js}; scripts/;
+  background_dual=scripts+service_worker gleicher Code; Firefox scripts; Chrome service_worker; importScripts defaults+lock;
+  storage_sync=blockedSites; questions; gateSettings;
+  storage_local=gateLogs; commitmentLock; lockSettings; dailyStats
+}
+
+@privacy{
+  data_location=lokal im Browser (sync/local storage);
+  telemetry=keine;
+  network=keine (außer vom User besuchte Sites nach Gate);
+  witness= nur Hash, nicht rekonstruierbar;
+  logs= nur lokal; User exportiert/löscht selbst;
+  statement_de=Site Gate sendet nichts. Deine Antworten bleiben auf deinem Gerät.
+}
+
+@limits_honest{
+  L01=Extension deaktivieren/deinstallieren umgeht alles;
+  L02=Inkognito: Extension muss separat erlaubt sein;
+  L03=Anderer Browser / Gerät / DNS / Hosts nicht abgedeckt;
+  L04=Kein OS-Level-Lock;
+  L05=Temporäres Firefox-Add-on: Neuladen nach Browser-Restart (debugging);
+  L06=Kein App-Store-Listing yet — side-load only
+}
+
+@install{
+  chrome=chrome://extensions → Entwicklermodus → Entpackte Erweiterung → Ordner site-gate-extension;
+  edge=edge://extensions → analog;
+  firefox=about:debugging → Temporäres Add-on → manifest.json;
+  firefox_old=manifest.firefox.json oder scripts/use-firefox-manifest.ps1;
+  icon_click=öffnet options/options.html (volle Einstellungsseite)
+}
+
+@changelog{
+  v1.0.0=Initiale Gate-Runde; Blockliste; Firefox+Chrome background fix;
+  v1.1.0=Fragen-Editor; Protokoll; Confirm-Bugfix; konfigurierbare Fragen;
+  v1.2.0=Toast; Fragen-Statistik+Limit; Themes; Commitment Lock; branch features;
+  v1.3.0=i18n en/de/es/fr; Self-Leveling; Progress+Language tabs; branch beta
+}
+
+@community_github{
+  repo_description_de=Self-use Browser-Addon: Reibung vor Ablenkung — konfigurierbare Fragerunde, lokales Protokoll, Commitment Lock.;
+  repo_description_en=Self-use browser extension: friction before distraction — configurable gate questions, local log, commitment lock.;
+  topics=browser-extension;webextensions;digital-wellbeing;self-control;firefox;chrome;manifest-v3;productivity;opensource;
+  readme_sections=About;Features;Screenshots-placeholder;Install;Settings tabs;Commitment Lock;Privacy;Limits;Structure;Contributing;License;
+  contributing=PRs willkommen; Issues für Bugs/Features; kein CLA; halte dich an Self-use-Philosophie;
+  issue_labels=bug;enhancement;firefox;chrome;documentation;good-first-issue;
+  release_title_template=Site Gate v{version};
+  star_cta_de=Wenn dir Reibung statt Willkür gefällt — Star hilft Sichtbarkeit.;
+  star_cta_en=If friction beats brute blocking — a star helps visibility.
+}
+
+@community_social{
+  platform_x= Kurz: Problem → Gate → Lock → Link. Max 280 Zeichen Varianten aus @identity+@features_core;
+  platform_mastodon= Wie X, mehr Kontext erlaubt, Hashtags sparsam;
+  platform_reddit= r/digitalminimalism r/selfimprovement r/firefox r/chrome — ehrlich über Limits; kein Astroturf;
+  platform_hn= Show HN: technische Ehrlichkeit; MV3 dual-background; kein Tracking; Ask for feedback;
+  post_angle_1=„Ich hab mir ein Addon gebaut, das mich fragt WARUM bevor Reddit lädt“;
+  post_angle_2=„Commitment Lock: Future-you sperrt Regeln, Present-you kann nur verschärfen“;
+  post_angle_3=„Kein Cloud-Blocker — alles lokal, mit ehrlichem Antwort-Log“;
+  post_angle_4=„Reibungs-Stacking: zweiter Durchlauf heute dauert länger — absichtlich“;
+  cta=Repo-Link; Feedback willkommen; Self-use first
+}
+
+@community_blog{
+  title_de=Site Gate: Warum ich mir Reibung ins Browser-Leben gebaut habe;
+  title_en=Site Gate: Why I Built Friction Into My Browser;
+  outline_1=Das Impuls-Problem (Autopilot-URL);
+  outline_2=Blocker vs Gate (Verbot vs bewusste Hürde);
+  outline_3=Wie die Fragerunde funktioniert (Typen, Editor);
+  outline_4=Commitment Lock und Future-you (Impuls-Budget, Stacking);
+  outline_5=Protokoll als Spiegel (lokal, kein Urteil);
+  outline_6=Ehrliche Grenzen (kein Gefängnis);
+  outline_7=Technik kurz (MV3, lokal, Open Source);
+  tone= persönlich, ich-Form, nicht marketing-heavy;
+  cta_end=GitHub-Link; Mitmachen; Issues
+}
+
+@sponsor{
+  policy= Sponsoring optional; nie Features hinter Paywall; Sponsor-Links klar markiert;
+  slot_readme= „Unterstütze Entwicklung“ — GitHub Sponsors / Ko-fi / Patreon Platzhalter;
+  slot_website= Danke-Sektion;
+  disclosure_de=Links zu Sponsoren sind gekennzeichnet. Site Gate bleibt kostenlos und Open Source.;
+  disclosure_en=Sponsor links are disclosed. Site Gate remains free and open source.;
+  placeholder_urls={github_sponsors=https://github.com/sponsors/USERNAME; ko_fi=https://ko-fi.com/USERNAME; patreon=https://patreon.com/USERNAME};
+  ethical= keine VPN/Casino/Glücksspiel-Werbung; kein Dark-Pattern-Sponsoring
+}
+
+@brand_voice{
+  do= klar; konkret; respektvoll; technisch ehrlich;
+  dont= Schuld; Hustle-Bro; „digital detox“-Kitsch; Heilsversprechen;
+  de_example= „Du kannst abbrechen und verzichten — das ist der leichte Weg. Der andere ist ehrlich antworten.“;
+  en_example= „You can abort and walk away — that's the easy path. The other is to answer honestly.“
+}
+
+@urls_placeholder{
+  repo=https://github.com/USERNAME/site-gate;
+  demo=none;
+  docs=https://github.com/USERNAME/site-gate#readme;
+  issues=https://github.com/USERNAME/site-gate/issues;
+  blog=https://YOURBLOG.example/posts/site-gate;
+  author=https://YOURBLOG.example/about
+}
+
+@derive{
+  github_readme=@identity + @philosophy + @features_core + @i18n + @leveling + @lock + @install + @privacy + @limits_honest + @community_github + @sponsor;
+  github_description=@community_github.repo_description_en;
+  social_short=@identity.one_liner_de + @urls_placeholder.repo + @identity.hashtag_de;
+  social_thread=post_angle_1;post_angle_2;post_angle_3;post_angle_4 → je 1 Post, Link am Ende;
+  blog_post=@community_blog.outline_* + @philosophy + @problem_solution + @limits_honest + @brand_voice;
+  release_notes=@changelog + @features_core (delta zur Vorversion);
+  sponsor_block=@sponsor.disclosure_de + @sponsor.placeholder_urls;
+  faq=ableiten aus @limits_honest + @privacy + @lock + @install
+}
+
+---
+# ABLEITUNGS-BEISPIELE (Beweis dass Codec funktioniert)
+# Entferne oder archiviere separat — im Repo optional als SITEGATE.derived.md
+
+[DERIVE:github_readme_intro]
+Site Gate ist ein **Self-use Browser-Addon**, das impulsive Besuche blockierter Websites unterbricht — nicht mit einem harten Verbot, sondern mit einer **konfigurierbaren Fragerunde**. Willst du wirklich? Dann beweise es. Willst du nicht? **Abbrechen und verzichten** ist immer der schnellste Ausweg.
+
+[DERIVE:social_x_280]
+Autopilot tippt reddit.com — Site Gate stoppt dich: Fragerunde, ehrliches Log, optional Commitment Lock fürs Future-you. Lokal. Kein Cloud-Zwang. 🚧 #SiteGate
+
+[DERIVE:blog_lead]
+Manche Blocker fühlen sich an wie eine Elternsperre für Erwachsene. Ich wollte das Gegenteil: ein Werkzeug, das *mich* fragt, nicht das mich bevormundet.
+
+[DERIVE:sponsor_footer]
+---
+💚 Site Gate ist frei und Open Source. Wenn es dir hilft: [GitHub Sponsors](https://github.com/sponsors/USERNAME). Sponsor-Links sind gekennzeichnet; Features bleiben für alle gleich.
+
+[DERIVE:faq_01]
+**Kann ich Site Gate umgehen?** Ja — Extension deaktivieren, anderer Browser, Inkognito ohne Addon. Ziel ist impulsivem Verhalten Reibung geben, nicht absolute Kontrolle.
+
+@end

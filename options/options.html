@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Site Gate</title>
+  <link rel="stylesheet" href="options.css"/>
+</head>
+<body data-i18n-title="app.pageTitle">
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <header class="top">
+    <h1 data-i18n="app.name">Site Gate</h1>
+    <p class="subtitle" data-i18n="app.subtitle">Self-use</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button type="button" class="tab tab--active" data-tab="justdoit" role="tab" data-i18n="tab.justdoit">Just do it</button>
+    <button type="button" class="tab" data-tab="sites" role="tab" data-i18n="tab.sites">Websites</button>
+    <button type="button" class="tab" data-tab="questions" role="tab" data-i18n="tab.questions">Questions</button>
+    <button type="button" class="tab" data-tab="theme" role="tab" data-i18n="tab.theme">Appearance</button>
+    <button type="button" class="tab" data-tab="lock" role="tab" data-i18n="tab.lock">Lock</button>
+    <button type="button" class="tab" data-tab="progress" role="tab" data-i18n="tab.progress">Progress</button>
+    <button type="button" class="tab" data-tab="language" role="tab" data-i18n="tab.language">Language</button>
+    <button type="button" class="tab" data-tab="logs" role="tab" data-i18n="tab.logs">Log</button>
+  </nav>
+
+  <section id="panel-justdoit" class="panel panel--active" role="tabpanel">
+    <h2 class="lock-heading" data-i18n="assistant.title">Just do it</h2>
+    <p class="hint" data-i18n="assistant.subtitle">Pick one behavior — Site Gate configures the rest. Protects you from option overload.</p>
+
+    <div class="assistant-mode-grid">
+      <label class="budget-mode-card assistant-mode-card">
+        <input type="radio" name="assistant-mode" value="just-block" id="assistant-just-block"/>
+        <span class="budget-mode-card__title" data-i18n="assistant.mode.justBlock">Just Block</span>
+        <span class="budget-mode-card__desc" data-i18n="assistant.mode.justBlockDesc">Listed domains are gated — one short checkpoint, no daily budget.</span>
+      </label>
+      <label class="budget-mode-card assistant-mode-card">
+        <input type="radio" name="assistant-mode" value="encouraged-enter" id="assistant-encouraged"/>
+        <span class="budget-mode-card__title" data-i18n="assistant.mode.encouraged">Encouraged Enter</span>
+        <span class="budget-mode-card__desc" data-i18n="assistant.mode.encouragedDesc">Full question round, then always through — reflection without daily caps.</span>
+      </label>
+      <label class="budget-mode-card assistant-mode-card">
+        <input type="radio" name="assistant-mode" value="budget-system" id="assistant-budget" checked/>
+        <span class="budget-mode-card__title" data-i18n="assistant.mode.budget">Budget System</span>
+        <span class="budget-mode-card__desc" data-i18n="assistant.mode.budgetDesc">Full Site Gate: impulse budgets, per-site limits, lock, growth tracking.</span>
+      </label>
+    </div>
+
+    <p id="assistant-mode-effect" class="budget-effect" role="status"></p>
+    <p id="assistant-guard-hint" class="hint assistant-guard-hint" hidden data-i18n="assistant.guardHint">Advanced budget controls under Lock apply only in Budget System mode.</p>
+
+    <div class="assistant-quick-links">
+      <p class="hint" data-i18n="assistant.quickLinks">Still need to edit lists?</p>
+      <button type="button" class="btn btn--linkish" id="assistant-goto-sites" data-i18n="assistant.gotoSites">Websites tab →</button>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-save-assistant" data-i18n="assistant.save">Apply mode</button>
+      <span class="status" id="status-assistant"></span>
+    </div>
+  </section>
+
+  <div id="assistant-banner" class="assistant-banner" hidden></div>
+
+  <section id="panel-sites" class="panel" role="tabpanel" hidden>
+    <label for="blocked-sites" data-i18n="sites.label">Blocked domains</label>
+    <textarea id="blocked-sites" spellcheck="false" placeholder="reddit.com&#10;youtube.com,1"></textarea>
+    <p class="hint" data-i18n="sites.hint">Without https:// — optional per line: host,budget</p>
+    <label for="endorsed-sites" data-i18n="sites.endorsedLabel">Endorsed domains (learning / productive)</label>
+    <textarea id="endorsed-sites" spellcheck="false" placeholder="developer.mozilla.org,20,MDN"></textarea>
+    <p class="hint" data-i18n="sites.endorsedHint">host,minutes,label — active tab time counts toward daily goals</p>
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-save-sites" data-i18n="sites.save">Save</button>
+      <span class="status" id="status-sites"></span>
+    </div>
+  </section>
+
+  <section id="panel-questions" class="panel" role="tabpanel" hidden>
+    <div class="q-stats" id="q-stats">
+      <div class="q-stat"><span class="q-stat__n" id="q-total">0</span><span class="q-stat__l" data-i18n="questions.total">Total</span></div>
+      <div class="q-stat q-stat--ok"><span class="q-stat__n" id="q-active">0</span><span class="q-stat__l" data-i18n="questions.active">Active</span></div>
+      <div class="q-stat q-stat--muted"><span class="q-stat__n" id="q-inactive">0</span><span class="q-stat__l" data-i18n="questions.inactive">Inactive</span></div>
+      <div class="q-stat q-stat--gate"><span class="q-stat__n" id="q-gate-round">0</span><span class="q-stat__l" data-i18n="questions.perRound">Per round</span></div>
+    </div>
+    <div class="round-config">
+      <div class="q-row q-row--inline">
+        <div>
+          <label for="question-round-limit" data-i18n="questions.roundLimit">Questions per round</label>
+          <input type="number" id="question-round-limit" min="0" max="99" value="0"/>
+          <p class="hint hint--tight" data-i18n="questions.roundLimitHint">0 = all active</p>
+        </div>
+        <div>
+          <label for="question-round-mode" data-i18n="questions.roundMode">Mode</label>
+          <select id="question-round-mode">
+            <option value="ordered" data-i18n="questions.mode.ordered">Ordered</option>
+            <option value="random" data-i18n="questions.mode.random">Random</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="panel-head">
+      <p class="hint" data-i18n="questions.editorHint">Order via arrows</p>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-add-question" data-i18n="questions.add">+ Question</button>
+        <button type="button" class="btn" id="btn-reset-questions" data-i18n="questions.reset">Reset</button>
+        <button type="button" class="btn btn--primary" id="btn-save-questions" data-i18n="questions.save">Save</button>
+        <span class="status" id="status-questions"></span>
+      </div>
+    </div>
+    <div id="questions-editor" class="questions-editor"></div>
+  </section>
+
+  <section id="panel-theme" class="panel" role="tabpanel" hidden>
+    <p class="hint" data-i18n="theme.hint">Gate themes</p>
+    <div id="theme-picker" class="theme-picker"></div>
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-save-theme" data-i18n="theme.save">Save theme</button>
+      <span class="status" id="status-theme"></span>
+    </div>
+    <div class="theme-preview-wrap">
+      <p class="hint" data-i18n="theme.preview">Preview</p>
+      <iframe id="theme-preview" class="theme-preview" title="Preview" src="../gate/gate.html?target=https%3A%2F%2Fexample.com&preview=1"></iframe>
+    </div>
+  </section>
+
+  <section id="panel-lock" class="panel" role="tabpanel" hidden>
+    <div id="lock-status" class="lock-status"></div>
+
+    <div class="lock-budget-section" id="budget-panel">
+      <h2 class="lock-heading" data-i18n="lock.budgetSection">Gate mode</h2>
+      <p class="hint" data-i18n="lock.budgetSectionHint">How blocked domains are enforced. Protected while commitment lock is active.</p>
+
+      <div class="budget-mode-grid">
+        <label class="budget-mode-card">
+          <input type="radio" name="budget-mode" value="static" id="budget-mode-static"/>
+          <span class="budget-mode-card__title" data-i18n="lock.modeStatic">Permanent gate</span>
+          <span class="budget-mode-card__desc" data-i18n="lock.modeStaticDesc">Every visit to blocked domains runs the question gate. No daily caps.</span>
+        </label>
+        <label class="budget-mode-card">
+          <input type="radio" name="budget-mode" value="budget" id="budget-mode-budget" checked/>
+          <span class="budget-mode-card__title" data-i18n="lock.modeBudget">Impulse budget</span>
+          <span class="budget-mode-card__desc" data-i18n="lock.modeBudgetDesc">After N successful gate rounds per day, access is blocked until tomorrow.</span>
+        </label>
+      </div>
+
+      <div id="budget-submode-panel" class="budget-submode-panel">
+        <p class="hint" data-i18n="lock.budgetSubmodeHint">Budget applies to:</p>
+        <div class="budget-scope-grid">
+          <label class="budget-scope-option">
+            <input type="radio" name="budget-scope" value="list" id="budget-scope-list" checked/>
+            <span data-i18n="lock.scopeList">Whole block list</span>
+          </label>
+          <label class="budget-scope-option">
+            <input type="radio" name="budget-scope" value="per-site" id="budget-scope-persite"/>
+            <span data-i18n="lock.scopePerSite">Individual per site</span>
+          </label>
+        </div>
+
+        <div id="budget-list-panel" class="budget-list-panel">
+          <label for="lock-budget" data-i18n="lock.budget">Gate rounds / day (all blocked sites)</label>
+          <input type="number" id="lock-budget" min="0" max="99" value="3"/>
+          <p class="hint hint--tight" data-i18n="lock.budgetHint">0 = unlimited — budget mode with no effective cap</p>
+        </div>
+
+        <details class="lock-host-budgets" id="lock-host-budgets-details">
+          <summary data-i18n="lock.hostBudgets">Per-site limits</summary>
+          <p class="hint hint--tight" data-i18n="lock.hostBudgetsHint">Only used in „Individual per site“ mode. Also: host,budget under Websites.</p>
+          <div id="lock-host-budget-list" class="lock-host-budget-list"></div>
+        </details>
+      </div>
+
+      <p id="budget-mode-effect" class="budget-effect" role="status"></p>
+
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="btn-save-budget" data-i18n="lock.saveBudget">Save gate mode</button>
+        <span class="status" id="status-budget"></span>
+      </div>
+    </div>
+
+    <div class="lock-commitment-section">
+      <h2 class="lock-heading" data-i18n="lock.commitmentSection">Commitment lock</h2>
+      <p class="hint" data-i18n="lock.commitmentHint">Witness-protected — freezes budget rules, block list, and questions.</p>
+    </div>
+
+    <div id="lock-active-panel" class="lock-panel" hidden>
+      <h2 class="lock-heading" data-i18n="lock.active.title">Lock active</h2>
+      <p class="hint" data-i18n="lock.active.hint">Tighten only</p>
+      <div class="lock-countdown" id="lock-countdown"></div>
+      <div class="lock-daily" id="lock-daily"></div>
+      <label for="unlock-witness" data-i18n="lock.unlockWitness">Witness</label>
+      <input type="password" id="unlock-witness" autocomplete="off"/>
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="btn-unlock" data-i18n="lock.unlock">Unlock</button>
+      </div>
+    </div>
+    <div id="lock-inactive-panel" class="lock-panel">
+      <h2 class="lock-heading" data-i18n="lock.inactive.title">Activate lock</h2>
+      <p class="hint" data-i18n="lock.inactive.hint">Commitment lock</p>
+      <div class="q-row q-row--inline">
+        <div><label for="lock-duration" data-i18n="lock.duration">Duration</label><select id="lock-duration"></select></div>
+      </div>
+      <div class="q-row q-row--inline">
+        <div><label for="lock-friction" data-i18n="lock.friction">Friction</label><input type="number" id="lock-friction" min="0" max="120" value="10"/></div>
+        <div><label for="lock-friction-cap" data-i18n="lock.frictionCap">Cap</label><input type="number" id="lock-friction-cap" min="0" max="300" value="60"/></div>
+      </div>
+      <label for="lock-witness" data-i18n="lock.witness">Witness phrase</label>
+      <input type="password" id="lock-witness" autocomplete="new-password"/>
+      <p class="hint" data-i18n="lock.witnessHint">Hash only</p>
+      <label class="q-active lock-confirm"><input type="checkbox" id="lock-confirm"/><span data-i18n="lock.confirm">I understand</span></label>
+      <div class="actions">
+        <button type="button" class="btn btn--primary" id="btn-activate-lock" data-i18n="lock.activate">Activate</button>
+        <span class="status" id="status-lock"></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="panel-progress" class="panel" role="tabpanel" hidden>
+    <h2 class="lock-heading" data-i18n="progress.title">Dual gate — restraint & growth</h2>
+    <p class="hint" data-i18n="progress.hint">Integrity from resisting impulses; growth from active time on endorsed sites.</p>
+    <div id="progress-dashboard" class="progress-dashboard"></div>
+    <div class="q-row">
+      <label for="leveling-mode" data-i18n="progress.mode">Mode</label>
+      <select id="leveling-mode">
+        <option value="reflect" data-i18n="progress.mode.reflect">Mirror</option>
+        <option value="adaptive" data-i18n="progress.mode.adaptive">Adaptive</option>
+        <option value="off" data-i18n="progress.mode.off">Off</option>
+      </select>
+      <p class="hint" data-i18n="progress.modeHint">Adaptive tuning</p>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-save-leveling" data-i18n="progress.save">Save</button>
+      <button type="button" class="btn btn--danger" id="btn-reset-level" data-i18n="progress.reset">Reset data</button>
+      <span class="status" id="status-progress"></span>
+    </div>
+  </section>
+
+  <section id="panel-language" class="panel" role="tabpanel" hidden>
+    <label for="locale-select" data-i18n="lang.select">Language</label>
+    <select id="locale-select"></select>
+    <p class="hint" data-i18n="lang.hint">Overrides below</p>
+    <label for="locale-overrides" data-i18n="lang.overrides">Custom JSON</label>
+    <textarea id="locale-overrides" rows="8" spellcheck="false" placeholder='{"gate.title": "My title"}'></textarea>
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-save-locale" data-i18n="lang.save">Save language</button>
+      <button type="button" class="btn" id="btn-export-locale" data-i18n="lang.export">Export</button>
+      <span class="status" id="status-language"></span>
+    </div>
+  </section>
+
+  <section id="panel-logs" class="panel" role="tabpanel" hidden>
+    <div class="panel-head">
+      <p class="hint" data-i18n="logs.hint">Local log</p>
+      <div class="actions">
+        <button type="button" class="btn" id="btn-export-logs" data-i18n="logs.export">Export</button>
+        <button type="button" class="btn btn--danger" id="btn-clear-logs" data-i18n="logs.clear">Clear</button>
+        <button type="button" class="btn" id="btn-refresh-logs" data-i18n="logs.refresh">Refresh</button>
+      </div>
+    </div>
+    <div id="log-viewer" class="log-viewer"></div>
+  </section>
+
+  <script src="../shared/dom.js"></script>
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="../shared/sites.js"></script>
+  <script src="../shared/budget.js"></script>
+  <script src="../shared/assistant.js"></script>
+  <script src="../shared/leveling.js"></script>
+  <script src="../shared/themes.js"></script>
+  <script src="../shared/lock.js"></script>
+  <script src="../shared/question-engine.js"></script>
+  <script src="options.js"></script>
+  <script src="options-assistant.js"></script>
+  <script src="options-beta.js"></script>
+</body>
+</html>

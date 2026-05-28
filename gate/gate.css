@@ -1,0 +1,225 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--gate-bg, #0d0d0f);
+  color: var(--gate-text, #e8e6e3);
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.gate {
+  width: min(560px, 100%);
+  border: 1px solid var(--gate-border, #3a2020);
+  background: var(--gate-surface, linear-gradient(160deg, #141418 0%, #1a1214 100%));
+  box-shadow: 0 0 80px var(--gate-glow, rgba(180, 40, 40, 0.15));
+  padding: 2rem;
+}
+
+.gate__header {
+  border-bottom: 1px solid var(--gate-border, #402828);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.gate__eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gate-accent, #b05050);
+  margin: 0 0 0.5rem;
+}
+
+.gate__title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+
+.gate__target {
+  font-size: 0.9rem;
+  color: var(--gate-muted, #a89890);
+  word-break: break-all;
+  margin: 0;
+}
+
+.gate__meta {
+  font-size: 0.78rem;
+  color: var(--gate-hint, #887870);
+  margin: 0.5rem 0 0;
+}
+
+.gate__progress {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.gate__dot {
+  flex: 1;
+  height: 4px;
+  background: color-mix(in srgb, var(--gate-border, #2a2224) 60%, transparent);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+
+.gate__dot--done {
+  background: var(--gate-accent-done, #6a3030);
+}
+
+.gate__dot--active {
+  background: var(--gate-accent-strong, #c04040);
+}
+
+.gate__question {
+  margin-bottom: 1rem;
+}
+
+.gate__label {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.gate__hint {
+  font-size: 0.8rem;
+  color: var(--gate-hint, #887870);
+  margin: 0 0 0.75rem;
+}
+
+.gate__input,
+.gate__textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--gate-text, #e8e6e3);
+  background: var(--gate-input-bg, #0a0a0c);
+  border: 1px solid var(--gate-input-border, #3a3030);
+  border-radius: 2px;
+}
+
+.gate__textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.gate__input:focus,
+.gate__textarea:focus {
+  outline: none;
+  border-color: var(--gate-input-focus, #804040);
+}
+
+.gate__timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--gate-timer, #d06060);
+  margin: 1rem 0;
+}
+
+.gate__timer--warn {
+  animation: pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.45; }
+}
+
+.gate__error {
+  min-height: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--gate-error, #e06060);
+  margin: 0.5rem 0 0;
+}
+
+.gate__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.gate__btn {
+  flex: 1;
+  min-width: 140px;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.gate__btn--primary {
+  background: var(--gate-btn-bg, #5a2828);
+  color: var(--gate-btn-text, #f0e8e4);
+}
+
+.gate__btn--primary:hover:not(:disabled) {
+  background: var(--gate-btn-hover, #703030);
+}
+
+.gate__btn--primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.gate__btn--abort {
+  background: transparent;
+  color: var(--gate-hint, #807870);
+  border: 1px solid var(--gate-input-border, #3a3530);
+}
+
+.gate__btn--abort:hover {
+  color: var(--gate-muted, #b0a8a0);
+  border-color: var(--gate-border, #504840);
+}
+
+.gate__focus-warn {
+  display: none;
+  background: var(--gate-warn-bg, #2a1818);
+  border: 1px solid var(--gate-warn-border, #603030);
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--gate-warn-text, #d08080);
+  margin-bottom: 1rem;
+}
+
+.gate__focus-warn--visible {
+  display: block;
+}
+
+.gate__charcount {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--gate-hint, #686058);
+  margin-top: 0.35rem;
+}
+
+.gate__charcount--ok {
+  color: var(--gate-ok, #508050);
+}
+
+.gate--budget {
+  text-align: center;
+}
+
+.gate__budget-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}

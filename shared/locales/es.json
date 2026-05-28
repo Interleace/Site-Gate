@@ -1,0 +1,10 @@
+{
+  "_meta": "Spanish locale — extends en.json via i18n fallback",
+  "app.subtitle": "Autoayuda: fricción antes de la distracción, registro honesto después.",
+  "tab.language": "Idioma",
+  "tab.progress": "Progreso",
+  "gate.abort": "Cancelar y renunciar",
+  "gate.confirmBtn": "Sí, realmente quiero",
+  "progress.title": "Integridad y rachas",
+  "progress.cleanStreak": "Racha de días limpios"
+}

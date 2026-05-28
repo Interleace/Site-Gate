@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Site Gate — Fragerunde",
+  "version": "1.4.0",
+  "description": "Self-use: friction gate, Just do it modes, impulse budget, endorsed learning time.",
+  "permissions": ["storage", "tabs", "webNavigation", "alarms"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "scripts": [
+      "shared/defaults.js",
+      "shared/lock.js",
+      "shared/sites.js",
+      "shared/budget.js",
+      "shared/assistant.js",
+      "shared/leveling.js",
+      "background.js"
+    ],
+    "service_worker": "background.js"
+  },
+  "action": { "default_title": "Site Gate — Settings" },
+  "options_ui": { "page": "options/options.html", "open_in_tab": true },
+  "icons": { "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "browser_specific_settings": {
+    "gecko": { "id": "site-gate@local", "strict_min_version": "109.0" }
+  }
+}

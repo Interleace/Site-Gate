@@ -1,0 +1,10 @@
+{
+  "_meta": "French locale — partial; falls back to en",
+  "app.subtitle": "Auto-assistance : friction avant distraction, journal honnête après.",
+  "tab.language": "Langue",
+  "tab.progress": "Progrès",
+  "gate.abort": "Annuler et renoncer",
+  "gate.confirmBtn": "Oui, je veux vraiment",
+  "progress.title": "Intégrité et séries",
+  "progress.cleanStreak": "Série de jours propres"
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Site Gate</title>
+  <link rel="stylesheet" href="gate.css"/>
+</head>
+<body data-i18n-title="gate.pageTitle">
+  <main class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <header class="gate__header">
+      <p class="gate__eyebrow" data-i18n="gate.blocked">Access blocked</p>
+      <h1 class="gate__title" id="gate-title" data-i18n="gate.title">Question round</h1>
+      <p class="gate__target" id="target-url"></p>
+      <p class="gate__meta" id="gate-meta"></p>
+      <p class="gate__meta gate__streak" id="gate-streak" hidden></p>
+    </header>
+
+    <div class="gate__progress" id="progress" aria-hidden="true"></div>
+
+    <div class="gate__focus-warn" id="focus-warn" data-i18n="gate.focusWarn">
+      Tab switched — wait timer reset.
+    </div>
+
+    <section class="gate__question" id="question-area"></section>
+    <p class="gate__error" id="error" role="alert"></p>
+
+    <div class="gate__actions">
+      <button type="button" class="gate__btn gate__btn--primary" id="btn-next" disabled data-i18n="gate.next">
+        Continue
+      </button>
+      <button type="button" class="gate__btn gate__btn--abort" id="btn-abort" data-i18n="gate.abort">
+        Cancel and give up
+      </button>
+    </div>
+  </main>
+  <script src="../shared/dom.js"></script>
+  <script src="../shared/defaults.js"></script>
+  <script src="../shared/i18n.js"></script>
+  <script src="../shared/leveling.js"></script>
+  <script src="../shared/themes.js"></script>
+  <script src="../shared/question-engine.js"></script>
+  <script src="gate.js"></script>
+</body>
+</html>
