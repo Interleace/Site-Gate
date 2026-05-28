@@ -4,8 +4,8 @@
 [![Version](https://img.shields.io/badge/version-1.4.0--beta.1-blue.svg)](CHANGELOG.md)
 [![Status](https://img.shields.io/badge/status-alpha--self--use-orange.svg)]()
 [![Manifest](https://img.shields.io/badge/manifest-MV3-purple.svg)]()
-[![Firefox](https://img.shields.io/badge/Firefox-109%2B-ff6600.svg)]()
-[![Chrome](https://img.shields.io/badge/Chrome-121%2B-4285F4.svg)]()
+[![Firefox](https://img.shields.io/badge/Firefox-soom%2B-ff6600.svg)]()
+[![Chrome](https://img.shields.io/badge/Chrome-soon%2B-4285F4.svg)]()
 [![No Cloud](https://img.shields.io/badge/cloud-none-lightgrey.svg)]()
 [![No Tracking](https://img.shields.io/badge/tracking-none-lightgrey.svg)]()
 
